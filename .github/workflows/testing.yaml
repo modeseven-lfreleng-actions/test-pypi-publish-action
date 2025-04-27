@@ -52,7 +52,7 @@ jobs:
         uses: ./
         with:
           path_prefix: 'test-python-project'
-          publish_disable: true
+          # publish_disable: true
           tag: "${{ env.tag }}"
           no_checkout: true
           op_service_account_token: "${{ secrets.op_service_account_token }}"
