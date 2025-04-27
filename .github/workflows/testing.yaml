@@ -28,6 +28,7 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
+    timeout-minutes: 15
     steps:
       # Harden the runner used by this workflow
       # yamllint disable-line rule:line-length
