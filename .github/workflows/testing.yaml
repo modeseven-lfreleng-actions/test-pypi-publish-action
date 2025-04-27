@@ -62,3 +62,4 @@ jobs:
           op_service_account_token: "${{ secrets.op_service_account_token }}"
           one_password_item: "${{ vars.one_password_item }}"
           pypi_credential: "${{ secrets.pypi_credential }}"
+          publish_disable: true
