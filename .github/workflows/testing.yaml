@@ -55,6 +55,6 @@ jobs:
           publish_disable: true
           tag: "${{ env.tag }}"
           no_checkout: true
-          op_service_account_token: "${{ secrets.op_service_account }}"
+          op_service_account_token: "${{ secrets.op_service_account_token }}"
           one_password_item: "${{ vars.one_password_item }}"
           pypi_credential: "${{ secrets.pypi_credential }}"
