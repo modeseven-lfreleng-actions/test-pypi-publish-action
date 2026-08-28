@@ -254,19 +254,28 @@ runs:
 
     - name: 'Print summary/job output'
       shell: bash
+      env:
+        # Passed through the environment rather than interpolated into
+        # the script body, so values cannot break out of shell quoting
+        # (zizmor: template-injection).
+        PUBLISH_DISABLE: "${{ inputs.publish_disable }}"
+        PUBLISH_METHOD: "${{ env.publish_method }}"
+        BASE_URL: "${{ env.base_url }}"
+        PROJECT_NAME: "${{ steps.naming.outputs.python_project_name }}"
+        TAG: "${{ inputs.tag }}"
       # yamllint disable rule:line-length
       run: |
         # Print summary/job output
-        if [ "${{ env.publish_disable }}" = 'true' ]; then
+        if [ "$PUBLISH_DISABLE" = 'true' ]; then
           echo "### Publishing Disabled: Dry Run 🛑" >> "$GITHUB_STEP_SUMMARY"
-        elif [ "${{ env.publish_method }}" = 'Skipped' ]; then
+        elif [ "$PUBLISH_METHOD" = 'Skipped' ]; then
           echo "### Publishing Skipped: Previously Released ⛔️" >> "$GITHUB_STEP_SUMMARY"
-        elif [ ${{ env.base_url }} != "https://pypi.org" ]; then
+        elif [ "$BASE_URL" != "https://pypi.org" ]; then
           echo '# 🧪 Test PyPI Release' >> "$GITHUB_STEP_SUMMARY"
         else
           echo '# 🚀 PyPI Release' >> "$GITHUB_STEP_SUMMARY"
         fi
-        echo "Authenticated using: ${{ env.publish_method }}" >> "$GITHUB_STEP_SUMMARY"
-        if [ "${{ env.publish_disable }}" != "true" ]; then
-          echo "🔗 ${{ env.base_url }}/project/${{ steps.naming.outputs.python_project_name }}/${{ inputs.tag }}/" >> "$GITHUB_STEP_SUMMARY"
+        echo "Authenticated using: $PUBLISH_METHOD" >> "$GITHUB_STEP_SUMMARY"
+        if [ "$PUBLISH_DISABLE" != "true" ]; then
+          echo "🔗 $BASE_URL/project/$PROJECT_NAME/$TAG/" >> "$GITHUB_STEP_SUMMARY"
         fi
